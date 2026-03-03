@@ -1,21 +1,17 @@
 console.log("Chargement ADMIN.JS OK")
 
-
-//ajout de la variable ici sinon je dois la déclarer dans userAdminConnected et dans userAdminDisconnected
-
-
 //Structurer mon JS avec des fonctions sinon pas maintenable 
 
-
-document.addEventListener("DOMContentLoaded", init);
-
-function init() {
+function initAdmin() {
     const token = localStorage.getItem("token");
     console.log("token récupéré dans le localstorage", token);
+    const login = document.getElementById("login");
+
+    if (!login) return;
     if (token) {
         console.log("Utilisateur connecté sur la page Admin");
         userAdminConnected();
-        displayWorksInModal();
+
     } else {
         console.log("Utilisateur déconnecté")
         userAdminDisconnected();
@@ -23,7 +19,6 @@ function init() {
     }
 
 }
-
 
 
 function userAdminConnected() {
@@ -40,9 +35,9 @@ function userAdminConnected() {
     });
 
     hidingFilters();
-
     editBanner();
-
+    openModalEvent();
+    closeModalEvent();
 }
 
 
@@ -68,14 +63,6 @@ function editBanner() {
     //margin au body 
     document.body.classList.add("adminconnected");
 
-    // const logo cliquable BOUTON MODIFIER AU NIVEAU DES PROJETS
-    // //const editlink = document.getElementById("edit-link");
-    // editlink.addEventListener("click", () => {
-    //     console.log("Click sur le Mode édition");
-
-    //     openModal();
-    //     //})
-
 }
 
 function hidingFilters() {
@@ -86,37 +73,48 @@ function hidingFilters() {
     console.log("filtres cachés");
 };
 
-function openModal() {
+function openModalEvent() {
     //affichage de la modale
-    const editModal = document.getElementById("edit-modal");
-    editModal.classList.remove("hidden");
+    const editLogo = document.getElementById("edit-bar-logo");
+    const modal = document.getElementById("edit-modal");
+    if (!editLogo || !modal)
+        return;
+    modal.classList.add("hidden");
+    editLogo.addEventListener("click", () => {
+        modal.classList.remove("hidden");
 
-    //const closingCross = editModal.querySelector(".modal-closing-cross");
-
-}
-
-function displayWorksInModal() {
-    const gallery = document.querySelector(".modal-works-gallery");
-    gallery.innerHTML = ""; //je vide la gallery avant chaque affichage j'évite des doublons 
-    console.log("affichage projets modale", works);
-    works.forEach(work => { //mon appel renvoie un tableau je dois créer les balises pour CHAQUE éléments
-        const figure = document.createElement("figure");
-        console.log(figure)
-        const img = document.createElement("img");
-        const button = document.createElement("button");
-        const icone = document.createElement("i");
-
-        img.src = work.imageUrl
-        img.alt = work.title
-        button.classList.add("trash-button")
-        icone.classList.add("fa-solid", "fa-trash-can")
-
-
-        figure.appendChild(img); //indentation HTML, gallery > figure > img + figcaption
-        figure.appendChild(button);
-        button.appendChild(icone);
-        gallery.appendChild(figure);
+        // Remplir la modale avec les projets récupérés
+        if (window.displayModalWorks && window.works) {
+            window.displayModalWorks(window.works);
+        }
     });
 }
 
 
+function closeModalEvent() {
+    const modal = document.getElementById("edit-modal");
+    if (!modal) return;
+
+    const closeButton = modal.querySelector(".modal-closing-cross")
+
+    //fermeture avec la croix  
+    if (closeButton) {
+        closeButton.addEventListener("click", () => {
+            modal.classList.add("hidden");
+        });
+
+        //fermeture overlay
+        // comment target ?
+        modal.addEventListener("click", (event) => {
+            if (event.target === modal) {
+                modal.classList.add("hidden");
+            }
+
+        })
+
+
+    }
+};
+
+// appel fonction initAdmin
+initAdmin();

@@ -3,13 +3,15 @@ console.log("Chargement SCRIPT.JS OK");
 // *****************************WORKS (PROJETS)*******************************************
 // stocke l'appel des éléments de l'API (évite de refaire un fetch)
 let works = []
+window.works = works;
 
 //fonction qui récupère les projets de l'API
 async function getWorks() { //créer la variable + async demande d'attendre la réponse de l'API 
   try {
     const response = await fetch("http://localhost:5678/api/works"); // attend la réponse serveur
     const data = await response.json(); // attend les données au format json (on récupère un tableau)
-    works = data // pour réafficher les projets dans la modale (utilisation de la variable works)
+    works = data; // pour réafficher les projets dans la modale (utilisation de la variable works)
+    window.works = works; // màj de la variable globale
     console.log("projets récupérés", works);
     return data
   } catch (error) {
@@ -96,13 +98,38 @@ async function displayCategories() {
   });
 }
 
+function displayModalWorks(data) {
+  const modalGallery = document.querySelector(".modal-works-gallery");
+  if (!modalGallery) return;
+
+  modalGallery.innerHTML = "";
+
+  data.forEach(work => {
+    const figure = document.createElement("figure");
+    figure.classList.add("modal-work");
+
+    const img = document.createElement("img");
+    img.src = work.imageUrl;
+    img.alt = work.title;
+
+    const btn = document.createElement("button");
+    btn.classList.add("trash-button");
+    btn.type = "button";
+    btn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+
+    figure.append(img, btn);
+    modalGallery.appendChild(figure);
+  });
+}
 
 //****************************INIT**********************************************
 // éviter de faire un nouveau fetch à chaque fois 
-async function init() {
-  await getWorks();       // récupère les projets une seule fois
-  displayWorks(works);    // affiche tous les projets
-  displayCategories();    // crée les boutons et leurs listeners
+async function initWorks() {
+  await getWorks();
+  displayWorks(window.works);
+  await displayCategories();
 }
 
-document.addEventListener("DOMContentLoaded", init);
+initWorks();
+
+

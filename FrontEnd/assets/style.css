@@ -327,6 +327,10 @@ body.adminconnected {
 	display: block;
 }
 
+.modal.hidden {
+	display: none;
+}
+
 .trash-button {
 	position: absolute;
 	top: 6px;
