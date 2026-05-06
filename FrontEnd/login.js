@@ -38,11 +38,17 @@ function loginUser() {
 
 
         } catch (error) {
-            console.log("Une erreur est survenue : " + error.message)
-        }
+            console.error("Une erreur est survenue :", error);
 
+            const errorMessage = document.querySelector(".error-message");
+
+            if (errorMessage) {
+                errorMessage.textContent = "Email ou mot de passe incorrect";
+            }
+        }
     });
 }
+
 
 //****APPEL FONCTION*****
 loginUser();

@@ -187,6 +187,12 @@ nav li {
 	font-size: 1.2em;
 }
 
+nav a {
+	text-decoration: none;
+	color: inherit;
+}
+
+
 li:hover {
 	color: #B1663C;
 }
@@ -220,10 +226,30 @@ li:hover {
 
 #portfolio h2 {
 	text-align: center;
-	margin-bottom: 1em;
+	margin-bottom: 0;
 }
 
-/* Styliser la barre d'édition*/
+.edit-button {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+}
+
+.edit-button i {
+	font-size: 16px;
+	line-height: 1;
+}
+
+.edit-button span {
+	font-size: 14px;
+	line-height: 1;
+	color: black;
+}
+
+
+/************** ADMIN JS MODALE EDITION********************/
+/* Bannière d'édition*/
 .banner-edit {
 	display: flex;
 	position: fixed;
@@ -245,22 +271,30 @@ li:hover {
 	justify-content: center;
 	align-items: center;
 	gap: 10px;
-
 }
 
-.hidden {
-	display: none;
+.portfolio-edit {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 1em;
 }
 
 body.adminconnected {
 	margin-top: 100px;
 }
 
-#edit-bar-logo {
+#portfolio-edit-icon {
 	cursor: pointer;
 }
 
-/*modale de modification des projets*/
+/* ADMIN JS ELEMENTS A CACHER EN MODE PUBLIC */
+.hidden {
+	display: none !important;
+}
+
+/* MODALE */
 .modal {
 	position: fixed;
 	inset: 0;
@@ -269,18 +303,24 @@ body.adminconnected {
 	justify-content: center;
 	align-items: center;
 	z-index: 2000;
-	/*au dessus du mode edition*/
-
 }
 
 .modal-content {
 	background-color: white;
 	border-radius: 10px;
 	width: 630px;
-	height: 688px;
-	padding: 60px 0 55px;
+	min-height: 688px;
+	padding: 60px 0 45px;
 	position: relative;
 	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+/* vue galerie */
+.modal-gallery-view {
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -293,31 +333,32 @@ body.adminconnected {
 	font-weight: 400;
 	margin: 0 0 45px 0;
 	text-align: center;
-
 }
 
 .modal-closing-cross {
 	position: absolute;
 	top: 20px;
 	right: 30px;
-	font-size: 23px;
+	font-size: 24px;
 	cursor: pointer;
+	color: black;
+	line-height: 1;
 }
 
 .modal-works-gallery {
 	width: 420px;
 	display: grid;
-	grid-template-columns: repeat(5, 75px);
+	grid-template-columns: repeat(5, 76px);
+	column-gap: 9px;
 	row-gap: 20px;
-	column-gap: 10px;
 	justify-content: center;
-	margin: 0 0 35px 0;
-
+	margin-bottom: 47px;
 }
 
 .modal-work {
 	position: relative;
 	width: 76px;
+	height: 102px;
 }
 
 .modal-work img {
@@ -325,10 +366,6 @@ body.adminconnected {
 	height: 102px;
 	object-fit: cover;
 	display: block;
-}
-
-.modal.hidden {
-	display: none;
 }
 
 .trash-button {
@@ -340,13 +377,11 @@ body.adminconnected {
 	background: black;
 	border: none;
 	border-radius: 2px;
-
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	padding: 0;
 	cursor: pointer;
-
 }
 
 .trash-button i {
@@ -359,8 +394,7 @@ body.adminconnected {
 	width: 420px;
 	border: none;
 	border-top: 1px solid #B3B3B3;
-	margin-top: 40px;
-	margin-bottom: 30px;
+	margin: 0 0 38px 0;
 }
 
 .modal-adding-button {
@@ -373,11 +407,154 @@ body.adminconnected {
 	font-family: "Syne", sans-serif;
 	font-size: 14px;
 	cursor: pointer;
-	margin-top: auto;
-	margin-bottom: 0;
+	display: block;
+	margin: 0 auto;
 }
 
-/* Styliser les bouttons de filtres */
+/* MODALE AJOUT */
+.modal-add-view {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.modal-header {
+	width: 100%;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 36px;
+}
+
+.modal-return {
+	position: absolute;
+	left: 30px;
+	font-size: 21px;
+	cursor: pointer;
+	color: black;
+}
+
+.modal-add-form {
+	width: 420px;
+	display: flex;
+	flex-direction: column;
+}
+
+.modal-image-upload {
+	height: 169px;
+	border-radius: 3px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 30px;
+	background-color: #E8F1F6;
+}
+
+.modal-image-upload i {
+	font-size: 76px;
+	margin-bottom: 6px;
+	color: #B9C5CC;
+}
+
+.upload-label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 173px;
+	height: 36px;
+	background-color: #CBD6DC;
+	color: #306685;
+	border-radius: 50px;
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	margin-bottom: 7px;
+}
+
+.modal-image-upload p {
+	font-size: 10px;
+	color: #444444;
+	margin: 0;
+}
+
+.modal-add-form label {
+	font-size: 14px;
+	font-weight: 500;
+	margin-bottom: 10px;
+	color: #3D3D3D;
+}
+
+.modal-add-form input,
+.modal-add-form select {
+	border: none;
+	height: 51px;
+	background-color: white;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	padding: 0 16px;
+	font-size: 14px;
+	box-sizing: border-box;
+	margin-bottom: 21px;
+	outline: none;
+}
+
+.modal-add-form select {
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%233D3D3D' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+	background-repeat: no-repeat;
+	background-position: right 16px center;
+	background-size: 16px;
+	padding-right: 45px;
+}
+
+.modal-submit-button {
+	width: 237px;
+	height: 36px;
+	border: none;
+	border-radius: 60px;
+	font-family: "Syne", sans-serif;
+	font-size: 14px;
+	font-weight: 700;
+	margin: 0 auto;
+	background-color: #A7A7A7;
+	color: white;
+	cursor: not-allowed;
+}
+
+/*message suite à l'ajout d'un projet*/
+
+.form-message {
+	margin-top: 10px;
+	margin-bottom: 15px;
+	font-size: 14px;
+	text-align: center;
+}
+
+.form-message.success {
+	color: #2ecc71;
+}
+
+.form-message.error {
+	color: #e74c3c;
+}
+
+.modal-submit-button.enabled {
+	background-color: #1D6154;
+	cursor: pointer;
+}
+
+#image-preview {
+	height: 169px;
+	max-width: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+/* SCRIPT JS FILTRES */
 .filters {
 	display: flex;
 	justify-content: center;
@@ -414,10 +591,18 @@ body.adminconnected {
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-column-gap: 20px;
 	grid-row-gap: 20px;
+
+}
+
+.gallery figure {
+	margin: 0;
 }
 
 .gallery img {
 	width: 100%;
+	height: 407px;
+	object-fit: cover;
+	display: block;
 
 }
 

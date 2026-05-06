@@ -2,11 +2,12 @@ console.log("Chargement SCRIPT.JS OK");
 
 // *****************************WORKS (PROJETS)*******************************************
 // stocke l'appel des éléments de l'API (évite de refaire un fetch)
+let categories = []
 let works = []
-window.works = works;
+window.works = works;//permet de partager de façon simple les données entre scripts.js et admin.js
 
 //fonction qui récupère les projets de l'API
-async function getWorks() { //créer la variable + async demande d'attendre la réponse de l'API 
+async function getWorks() { //créer la variable + async/await demande d'attendre la réponse de l'API 
   try {
     const response = await fetch("http://localhost:5678/api/works"); // attend la réponse serveur
     const data = await response.json(); // attend les données au format json (on récupère un tableau)
@@ -22,7 +23,8 @@ async function getWorks() { //créer la variable + async demande d'attendre la r
 // fonction qui affiche la liste de projets (+indentation HTML)
 function displayWorks(data) {
   const gallery = document.querySelector(".gallery");
-  gallery.innerHTML = ""; //je vide la gallery avant chaque affichage j'évite des doublons 
+  if (!gallery) return;
+  gallery.innerHTML = ""; //vider la gallery avant chaque affichage 
   console.log("affichage projets", data);
   data.forEach(work => { //mon appel renvoie un tableau je dois créer les balises pour CHAQUE éléments
     const figure = document.createElement("figure");
@@ -48,6 +50,7 @@ async function getCategories() {
   try {
     const response = await fetch("http://localhost:5678/api/categories");
     const data = await response.json();
+    categories = data
     return data
   } catch (error) {
     console.error("erreur fetch", error);
@@ -60,7 +63,7 @@ function setSelectedButton(clickedButton) {
   clickedButton.classList.add("selected");
 }
 
-// ************************************FILTRES
+// ************************************FILTRES**************************************************************
 //fonction qui filtre et affiche les projets 
 function filterWorks(categoryId) {
   console.log("ID categorie choisie", categoryId);
@@ -98,32 +101,9 @@ async function displayCategories() {
   });
 }
 
-function displayModalWorks(data) {
-  const modalGallery = document.querySelector(".modal-works-gallery");
-  if (!modalGallery) return;
 
-  modalGallery.innerHTML = "";
-
-  data.forEach(work => {
-    const figure = document.createElement("figure");
-    figure.classList.add("modal-work");
-
-    const img = document.createElement("img");
-    img.src = work.imageUrl;
-    img.alt = work.title;
-
-    const btn = document.createElement("button");
-    btn.classList.add("trash-button");
-    btn.type = "button";
-    btn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
-
-    figure.append(img, btn);
-    modalGallery.appendChild(figure);
-  });
-}
 
 //****************************INIT**********************************************
-// éviter de faire un nouveau fetch à chaque fois 
 async function initWorks() {
   await getWorks();
   displayWorks(window.works);
