@@ -5,13 +5,11 @@ function loginUser() {
     connectionMode.addEventListener("submit", async function (event) {
         event.preventDefault();
         console.log("fonction loginUser appelée");
-        //charge utile
         const dataLogin = {
             email: event.target.email.value,
             password: event.target.password.value
         }
         console.log(dataLogin);
-        //transformation de la charge utile au format JSON
         const convertJSON = JSON.stringify(dataLogin);
         //fetch données utilisateurs avec try et catch
         try {
