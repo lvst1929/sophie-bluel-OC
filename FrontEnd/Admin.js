@@ -91,6 +91,13 @@ function openModalEvent() {
         galleryView.classList.remove("hidden");
         addView.classList.add("hidden");
 
+        const deleteMessage = document.getElementById("delete-message");
+        if (deleteMessage) {
+            deleteMessage.textContent = "";
+            deleteMessage.classList.add("hidden");
+            deleteMessage.classList.remove("success", "error");
+        }
+
         displayModalWorks(works);
     });
 }
@@ -155,12 +162,12 @@ async function deleteWork(id) {
             }
         });
 
-        //VERIF SI ERREUR
         if (!response.ok) {
             throw new Error(`Erreur HTTP : ${response.status}`);
         }
 
         const updatedWorks = await getWorks();
+
         displayWorks(updatedWorks);
         displayModalWorks(updatedWorks);
 
@@ -171,15 +178,13 @@ async function deleteWork(id) {
         }
 
     } catch (error) {
-        console.error("erreur suppression projets", error);
+        console.error("Erreur suppression projet :", error);
 
         if (message) {
             message.textContent = "Impossible de supprimer le projet";
             message.classList.remove("hidden", "success");
             message.classList.add("error");
         }
-
-        alert("Impossible de supprimer le projet, veuillez réessayer");
     }
 }
 
@@ -195,6 +200,13 @@ function openModalAddPhotoView() {
     addButton.addEventListener("click", async () => {
         galleryView.classList.add("hidden");
         addView.classList.remove("hidden");
+
+        const formMessage = document.getElementById("form-message");
+        if (formMessage) {
+            formMessage.textContent = "";
+            formMessage.classList.add("hidden");
+            formMessage.classList.remove("success", "error");
+        }
         await selectCategory();
     });
 }
@@ -343,23 +355,30 @@ async function addWork(event) {
         }
 
         const updatedWorks = await getWorks();
+
         displayWorks(updatedWorks);
         displayModalWorks(updatedWorks);
+
         event.target.reset();
+
         resetAddWorkFormView();
         checkAddWorkForm();
 
-
-        message.textContent = "Votre projet a été ajouté avec succès";
-        message.classList.remove("hidden");
+        message.textContent = "Projet ajouté avec succès";
+        message.classList.remove("hidden", "error");
         message.classList.add("success");
 
+        setTimeout(() => {
+            message.textContent = "";
+            message.classList.add("hidden");
+            message.classList.remove("success");
+        }, 2000);
 
     } catch (error) {
         console.error("Erreur ajout projet :", error);
 
         message.textContent = "Erreur lors de l'ajout du projet";
-        message.classList.remove("hidden");
+        message.classList.remove("hidden", "success");
         message.classList.add("error");
     }
 }
@@ -382,12 +401,8 @@ function resetAddWorkFormView() {
     if (uploadLabel) uploadLabel.classList.remove("hidden");
     if (uploadText) uploadText.classList.remove("hidden");
 
-    if (message) {
-        message.textContent = "";
-        message.classList.remove("success", "error");
-        message.classList.add("hidden");
-    }
 }
+
 
 
 initAdmin();

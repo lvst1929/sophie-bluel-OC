@@ -17,9 +17,7 @@ function loginUser() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: convertJSON
-
             });
-
             // si erreur API
             if (!response.ok) {
                 throw new Error("invalid credentials");
