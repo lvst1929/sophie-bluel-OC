@@ -364,6 +364,7 @@ async function addWork(event) {
         resetAddWorkFormView();
         checkAddWorkForm();
 
+
         message.textContent = "Projet ajouté avec succès";
         message.classList.remove("hidden", "error");
         message.classList.add("success");
@@ -372,6 +373,10 @@ async function addWork(event) {
             message.textContent = "";
             message.classList.add("hidden");
             message.classList.remove("success");
+
+            //fermeture de la modale à l'ajout du projet après un petit délai pour voir le msg de succès
+            const modal = document.getElementById("edit-modal");
+            modal.classList.add("hidden");
         }, 2000);
 
     } catch (error) {
